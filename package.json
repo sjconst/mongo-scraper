@@ -1,0 +1,32 @@
+{
+  "name": "mongo-scraper",
+  "version": "1.0.0",
+  "description": "an app that scrapes news articles and saves to mongo db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjconst/mongo-scraper.git"
+  },
+  "keywords": [
+    "mongo",
+    "mongoose",
+    "react",
+    "node.js"
+  ],
+  "author": "Stephanie Lake",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sjconst/mongo-scraper/issues"
+  },
+  "homepage": "https://github.com/sjconst/mongo-scraper#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.12",
+    "mongoose-unique-validator": "^2.0.3"
+  }
+}
