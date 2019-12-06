@@ -50,7 +50,7 @@ app.get("/scrape", (req, res) => {
       })
       myArticles.create(results)        
         .then(data => console.log(data))
-        .catch(err => console.log(err));    
+        .catch(err => console.log("An error occured, most likely duplicate article being scraped"));    
     });
     res.json("Scrape Complete");
    });
@@ -64,6 +64,7 @@ app.get("/api/articles", (req, res) => {
 //Route for getting all articles of certain date
 app.get("/api/articles/:date", (req, res) => {
     let date = req.params.date;
+    console.log(date);
     myArticles.find({
       dateCreated: date
     })
@@ -83,12 +84,8 @@ app.get("/api/articles/:id", function(req, res) {
         runValidators: true, context: 'query' 
     } */)
     .populate("comment")
-    .then(dbArticle => {
-      res.json(dbArticle);
-    })
-    .catch(err => {
-      res.json(err);
-    });
+    .then(data=> res.json(data))
+    .catch(err => res.json(err));
 });
 // Route for saving/updating an Article's associated comment
 app.post("/api/articles/:id", (req, res) => {

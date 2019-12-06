@@ -18,7 +18,6 @@ function Home(){
             return newToday;
           };
         const date = `${today.getFullYear()}-${today.getMonth()+1}-${day(today)}`;
-        console.log(date);
         API.getArticlesByDate(date);
         })
         .then(response => {
