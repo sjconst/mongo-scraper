@@ -13,10 +13,10 @@ function Home(){
             let data = response.data;
             console.log(data[0].dateCreated); 
             const today = new Date();
-            const day = today => {
+            // const day = today => {
               
-              if()
-            }
+            //   if()
+            // }
             const date = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
             console.log(date)
             setArticles(data);            
