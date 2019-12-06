@@ -61,6 +61,15 @@ app.get("/api/articles", (req, res) => {
     .then(data => res.json(data))
     .catch(err => res.json(err))
 }); 
+//Route for getting all articles of certain date
+app.get("/api/articles/:date", (req, res) => {
+    let date = req.params.date;
+    myArticles.find({
+      dateCreated: date
+    })
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
+})
 // Route for getting all saved articles from the db
 app.get("/api/savedArticles", (req, res) => {  
   myArticles.find({ saved: true })

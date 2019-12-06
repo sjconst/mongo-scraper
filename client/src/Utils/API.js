@@ -9,6 +9,9 @@ export default {
   getArticles: () => {
       return axios.get("/api/articles")
   },
+  getArticlesByDate: date => {
+      return axios.get(`/api/articles/${date}`)
+  },
   //Gets saved articles from the db
   getSaved: () => {
     return axios.get("/api/savedArticles")
