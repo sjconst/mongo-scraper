@@ -11,3 +11,15 @@ This ReactJS full stack app uses Cheerio to scrape the New York Times website, m
 - Node.js and Express
 
 ## Getting Started
+
+To download and test this app, you will need the Node Packet Manager installed.  For more information, visit: <https://www.npmjs.com/get-npm>
+
+You will also need Node.js installed.  For more information, visit <https://nodejs.org/en/download/>
+
+### Installing
+
+To install, access the Github page <https://github.com/sjconst/mongo-scraper>.  You may fork the repository and then clone it to your computer.  
+
+Next, you will need to download the required NPM packages, on both the client and root foolders. Because these packages are listed as dependencies already in the package.json file, you may install these packages by typing `npm install` on the command line.
+
+This app uses MySQL. You will need to set up your remote database by uploading the information in the `schema.sql` file located in the models folder. 
