@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-var uniqueValidator = require('mongoose-unique-validator');
+const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
-const ArticleSchema = new Schema({
+const articleSchema = new Schema({
   headline: {
     type: String,
     required: true,
@@ -15,11 +15,19 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  comment: {
+  comment: [{
     type: Schema.Types.ObjectId,
     ref: "Comment"
+  }],
+  saved: {
+    type: Boolean,
+    default: false
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now
   }
 });
-mySchema.plugin(uniqueValidator);
-const Article = mongoose.model("Article", ArticleSchema);
-module.exports = Article;
+// articleSchema.plugin(uniqueValidator);
+const Articles = mongoose.model("Article", articleSchema);
+module.exports = Articles;

@@ -1,0 +1,8 @@
+.myButton {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+#myComment {
+    border: 1px solid gray;
+    padding: 5px;
+}

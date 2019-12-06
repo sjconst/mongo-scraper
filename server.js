@@ -1,112 +1,119 @@
 const express = require("express");
-const logger = require("morgan");
+const path = require("path");
 const mongoose = require("mongoose");
 const axios = require("axios");
+const myArticles = require("./models/articles");
+const comments = require("./models/comments");
+const PORT = process.env.PORT || 3001;
 const cheerio = require("cheerio");
-const db = require("./models");
-const PORT = 3000;
+const mongojs = require("mongojs");
+// Initialize Express
+const app = express();
+//Cors middleware
+const cors = require("cors");
+app.use(cors());
 //Mongoose settings
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-
-// Initialize Express
-const app = express();
-
-// Configure middleware
-
-// Use morgan logger for logging requests
-app.use(logger("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
-app.use(express.static("public"));
-
+// Static assets
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"));
+}
 // Connect to the Mongo DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI);
-
 // Routes
-// A GET route for scraping the nytimes website
-app.get("/scrape", function(req, res) { 
-  axios.get("http://www.nytimes.com/").then(function(response) {  
-      //article class css-8atqhb
-      //a href has link
-      //headlines h2 with class es182me0
-      //summary is p with class css-1pfq5u e1n8kpyg0
-    const $ = cheerio.load(response.data);    
-    $("article").each((i, element) => {     
-        let result = {};        
-        result.title = $(this)
-            .children("h2")
-            .text();
-        result.link = $(this)
-            .children("a")
-            .attr("href");      
-        result.summary = $(this)
-        .children("p")
-        .attr("href");  
-      db.Article.create(result)
-        .then(function(dbArticle) {        
-          console.log(dbArticle);
-        })
-        .catch(function(err) {          
-          console.log(err);
-        });
-    });
-    res.send("Scrape Complete");
-  });
+// Home route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
-// Route for getting all Articles from the db
-app.get("/articles", function(req, res) {  
-  db.Article.find({})
-    .then(function(dbArticle) {      
-      res.json(dbArticle);
-    })
-    .catch(function(err) {     
-      res.json(err);
+// Route for scraping the nytimes website
+app.get("/scrape", (req, res) => {   
+  //need to implement: limit to 10-20
+  axios.get("https://www.nytimes.com/")
+  .then(response => {  
+    const $ = cheerio.load(response.data);      
+    $("article").each((i, element) => {  
+      let results = [];
+      let headline = $(element).find("h2").attr("class", "es182me0").text();     
+      let URL = $(element).find("a").attr("href")  
+      let summary = $(element).find("p").attr("class", "css-1pfq5u").attr("class", "e1n8kpyg0").text();    
+      results.push({
+        headline: headline,
+        URL: URL,
+        summary: summary
+      })
+      myArticles.create(results)        
+        .then(data => console.log(data))
+        .catch(err => console.log(err));    
     });
+    res.json("Scrape Complete");
+   });
 });
+// Route for getting all articles from the db
+app.get("/api/articles", (req, res) => {  
+  myArticles.find({})
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
+}); 
+// Route for getting all saved articles from the db
+app.get("/api/savedArticles", (req, res) => {  
+  myArticles.find({ saved: true })
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
+}); 
 // Route for grabbing a specific Article by id and populate all comments
-app.get("/articles/:id", function(req, res) { 
-  db.Article.findOne({
-        _id: req.params.id}, { 
+app.get("/api/articles/:id", function(req, res) { 
+  myArticles.findOne({
+        _id: req.params.id}/* , { 
         runValidators: true, context: 'query' 
-    })
-    // ..and populate all of the comments associated with it
+    } */)
     .populate("comment")
     .then(dbArticle => {
-      // If we were able to successfully find an Article with the given id, send it back to the client
       res.json(dbArticle);
     })
     .catch(err => {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
 // Route for saving/updating an Article's associated comment
-app.post("/articles/:id", function(req, res) {
+app.post("/api/articles/:id", (req, res) => {
+  console.log(req.body);
   // Create a new note and pass the req.body to the entry
-  db.Note.create(req.body)
-    .then(dbNote => {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+  comments.create({body: req.body.comment})
+    .then(data => {
+      // If a comment was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new comment
+      // { new: true } tells the query that we want it to return the updated articles -- it returns the original by default
+      return myArticles.findOneAndUpdate({ _id: req.params.id }, { comment: data._id }, { new: true });
     })
-    .then(function(dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
+    .then(data => res.json(data))
+    .catch(err => res.json(err));
 });
-
+//Route for updating article
+app.put("/api/articles/:isSaved/:id", (req, res) => {   
+  myArticles.update({    
+    _id: mongojs.ObjectId(req.params.id)},{
+      $set:{
+        saved: req.params.isSaved
+      }
+    })
+    .then(data => res.json(data))
+    .catch(err => res.json(err))    
+})
+//delete comments
+app.delete("/api/comment/:id", (req, res) => {
+  comments.deleteOne({
+    _id: mongojs.ObjectID(req.params.id)
+  })
+  .then(data => res.json(data))
+  .catch(err => res.json(err))
+})
 // Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}`);
 });

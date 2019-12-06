@@ -1,0 +1,18 @@
+/* Color Palette
+light peach: #FBE8A6
+Dark peach: #F4976C
+Dark blue: #303C6C
+Light blue: #B4DFE5
+light turquoise: #D2FDFF */
+.nav-link{
+    color: #303C6C;
+    margin-right: 20px;
+    font-weight: 500;
+    text-decoration: none;
+}
+#myNavbar {
+    background-color: rgba(251, 232, 166, 0.85);
+}
+#myLink {
+    text-decoration: none;
+}

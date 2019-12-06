@@ -2,9 +2,16 @@
   "name": "mongo-scraper",
   "version": "1.0.0",
   "description": "an app that scrapes news articles and saves to mongo db",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run server\" \"npm run client\"",
+    "server": "node server.js",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,11 +28,20 @@
   "bugs": {
     "url": "https://github.com/sjconst/mongo-scraper/issues"
   },
+  "devDependencies": {
+    "concurrently": "^4.1.2",
+    "nodemon": "^1.19.4"
+  },
   "homepage": "https://github.com/sjconst/mongo-scraper#readme",
   "dependencies": {
     "axios": "^0.19.0",
+    "babel-core": "^6.26.3",
     "cheerio": "^1.0.0-rc.3",
+    "core-util-is": "^1.0.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "if-env": "^1.0.4",
+    "mongojs": "^3.1.0",
     "mongoose": "^5.7.12",
     "mongoose-unique-validator": "^2.0.3"
   }
