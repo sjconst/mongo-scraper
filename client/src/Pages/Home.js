@@ -8,20 +8,21 @@ function Home(){
     const [articles, setArticles] = useState([]);       
     useEffect(() => {  
         API.scrapeArticles()
-        .then(response => API.getArticles())
         .then(response => {
-            let data = response.data;
-            console.log(data[0].dateCreated); 
-            const today = new Date();
-            const day = today => { 
-              let newToday = today.getDate();        
-              if(newToday < 10) {
-                newToday = `0${newToday}`; 
-              }
-              return newToday;
-            };
-            const date = `${today.getFullYear()}-${today.getMonth()+1}-${day(today)}`
-            console.log(data)
+          const today = new Date();
+          const day = today => { 
+          let newToday = today.getDate();        
+            if(newToday < 10) {
+              newToday = `0${newToday}`; 
+            }
+            return newToday;
+          };
+        const date = `${today.getFullYear()}-${today.getMonth()+1}-${day(today)}`;
+        console.log(date);
+        API.getArticlesByDate(date);
+        })
+        .then(response => {
+            let data = response.data;           
             setArticles(data);            
         })
     }, [])
