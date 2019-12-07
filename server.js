@@ -27,7 +27,7 @@ app.use(routes);
 //Error handler
 app.use((err, req, res, next) => {
   console.log(`There is an error, and it is ${err}`); 
-  res.sendStatues(500);
+  res.sendStatus(500);
 });
 // Start the server
 app.listen(PORT, () => {
