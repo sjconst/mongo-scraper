@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 }
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI);
 // Use routes
 const routes = require("./routes/routes");
