@@ -18,12 +18,12 @@ function Home(){
             return newToday;
           };
         const date = `${today.getFullYear()}-${today.getMonth()+1}-${day(today)}`;
-        API.getArticlesByDate(date);
-        })
-        .then(response => {
-            let data = response.data;           
-            setArticles(data);            
-        })
+        API.getArticlesByDate(date)
+          .then(response => {
+            let data = response.data;
+            setArticles(data)
+          })
+        })       
     }, [])
     return (
         <div id="homeBackground">
