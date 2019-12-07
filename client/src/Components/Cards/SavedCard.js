@@ -23,9 +23,11 @@ function SavedCard(props){
     }
     const getComments = e => {
         let id = e.target.dataset.id;
+        console.log(id);
         API.getOneArticle(id)
         .then(response => {            
-            let data = response.data.comment;          
+            let data = response.data.comment;    
+            console.log(data)      
             setComments(data)
             handleShow();
         })
