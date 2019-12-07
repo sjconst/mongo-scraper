@@ -50,7 +50,7 @@ app.get("/api/articles/date/:date", (req, res) => {
     let date = req.params.date;    
     myArticles.find({
     dateCreated: {
-        "$gt": new Date(new Date(date).setHours(23, 59, 59))
+        "$gt": new Date(new Date(date).setHours(00, 00, 00))
     }})
     .then(data => res.json(data))
     .catch(err => res.json(err))
