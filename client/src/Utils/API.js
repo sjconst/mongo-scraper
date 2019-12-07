@@ -10,7 +10,7 @@ export default {
       return axios.get("/api/articles")
   },
   getArticlesByDate: date => {
-      return axios.get(`/api/articles/${date}`)
+      return axios.get(`/api/articles/date/${date}`)
   },
   //Gets saved articles from the db
   getSaved: () => {
@@ -18,11 +18,11 @@ export default {
   },
   // Gets an article and comments with the given id
   getOneArticle: id =>{
-    return axios.get(`/api/articles/${id}`);
+    return axios.get(`/api/articles/id/${id}`);
   },
   //updates article to mark as saved or not
   saveArticle: (id, isSaved) => {
-    return axios.put(`/api/articles/${isSaved}/${id}`);
+    return axios.put(`/api/articles/isSaved/${isSaved}/${id}`);
   },
   // Deletes the comment with the given id
   deleteComment: id => {
@@ -30,7 +30,7 @@ export default {
   },
   // Saves a comment to the database
   saveComment: (id, commentData) => {   
-    return axios.post(`/api/articles/${id}`, {
+    return axios.post(`/api/articles/id/${id}`, {
       comment: commentData
     });
   }

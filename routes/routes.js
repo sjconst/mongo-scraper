@@ -46,16 +46,15 @@ catch(err){
 }
 });  
 //Route for getting all articles of certain date
-app.get("/api/articles/:date", (req, res) => {
-    let date = req.params.date;
+app.get("/api/articles/date/:date", (req, res) => {
+    let date = req.params.date;    
     console.log(date);
+    console.log(new Date(new Date(date).setHours(23, 59, 59)));
     myArticles.find({
     dateCreated: {
-        "$gt": new Date(new Date("2019-12-07").setHours(23, 59, 59))
+        "$gt": new Date(new Date(date).setHours(23, 59, 59))
     }})
-    .then(data => {
-    console.log(data);
-    res.json(data)})
+    .then(data => res.json(data))
     .catch(err => res.json(err))
 })
 // Route for getting all saved articles from the db
@@ -65,9 +64,9 @@ myArticles.find({ saved: true })
     .catch(err => res.json(err))
 }); 
 // Route for grabbing a specific Article by id and populate all comments
-app.get("/api/articles/:id", function(req, res) { 
+app.get("/api/articles/id/:id", function(req, res) { 
 myArticles.findOne({
-        _id: req.params.id}/* , { 
+        _id: mongojs.ObjectId(req.params.id)}/* , { 
         runValidators: true, context: 'query' 
     } */)
     .populate("comment")
@@ -75,20 +74,19 @@ myArticles.findOne({
     .catch(err => res.json(err));
 }); 
 // Route for saving/updating an Article's associated comment
-app.post("/api/articles/:id", (req, res) => {
-console.log(req.body);
-// Create a new note and pass the req.body to the entry
-comments.create({body: req.body.comment})
-    .then(data => {
-    // If a comment was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new comment
-    // { new: true } tells the query that we want it to return the updated articles -- it returns the original by default
-    return myArticles.findOneAndUpdate({ _id: req.params.id }, { comment: data._id }, { new: true });
-    })
-    .then(data => res.json(data))
-    .catch(err => res.json(err));
+app.post("/api/articles/id/:id", (req, res) => {
+    // Create a new note and pass the req.body to the entry
+    comments.create({body: req.body.comment})
+        .then(data => {
+        // If a comment was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new comment
+        // { new: true } tells the query that we want it to return the updated articles -- it returns the original by default
+        return myArticles.findOneAndUpdate({ _id: req.params.id }, { comment: data._id }, { new: true });
+        })
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
 });
 //Route for updating article
-app.put("/api/articles/:isSaved/:id", (req, res) => {   
+app.put("/api/articles/isSaved/:isSaved/:id", (req, res) => {   
 myArticles.update({    
     _id: mongojs.ObjectId(req.params.id)},{
     $set:{
@@ -100,14 +98,14 @@ myArticles.update({
 });
 //delete comments
 app.delete("/api/comment/:id", (req, res) => {
-comments.deleteOne({
-    _id: mongojs.ObjectID(req.params.id)
-})
-.then(data => res.json(data))
-.catch(err => res.json(err))
+    comments.deleteOne({
+        _id: mongojs.ObjectID(req.params.id)
+    })
+    .then(data => res.json(data))
+    .catch(err => res.json(err))
 });
 // Home route
 app.get("/*", (req, res) => {
-res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
+    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+    });
 module.exports = app;

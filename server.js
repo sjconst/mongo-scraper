@@ -26,7 +26,7 @@ const routes = require("./routes/routes");
 app.use(routes);
 //Error handler
 app.use((err, req, res, next) => {
-  console.log(err); 
+  console.log(`There is an error, and it is ${err}`); 
   res.sendStatues(500);
 });
 // Start the server

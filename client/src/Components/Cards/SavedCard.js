@@ -23,16 +23,12 @@ function SavedCard(props){
     }
     const getComments = e => {
         let id = e.target.dataset.id;
-        console.log(id);
         API.getOneArticle(id)
-        .then(response => {
-            let data = response.data.comment; 
+        .then(response => {            
+            let data = response.data.comment;          
             setComments(data)
             handleShow();
         })
-        .then(
-            console.log(comments)
-        )
     };
     const saveComment = e => {
         e.preventDefault();
@@ -57,7 +53,7 @@ function SavedCard(props){
         .then(res => {
             handleClose();
         })
-    }
+    };
     return (      
         <Card key={props.id} >
             <Card.Body>
@@ -74,8 +70,8 @@ function SavedCard(props){
                     {comments.length ? (
                         <div>               
                             {comments.map(el => ( 
-                                <div>                   
-                                    <p id="myComment" key={el._id}>{el.body} <Button onClick={deleteComment} variant="secondary" size="sm" data-id={el._id}>Delete</Button></p>                                    
+                                <div key={el._id}>                   
+                                    <p id="myComment" key={el._id}>{el.body} <Button onClick={deleteComment} variant="secondary" size="sm" data-id={el._id}>Delete</Button></p>  
                                 </div>
                             ))}
                         </div>
