@@ -14,7 +14,7 @@ function Saved(){
         })
     }, [])
     return (
-        <div id="saveBackground">
+        <div id="saveBackground" className="transparent">
         <Container id="saveContainer" >
           <Row>
             <h1>Your Saved Articles</h1>              
@@ -26,8 +26,12 @@ function Saved(){
                 </CardColumns>
             ) : (
                 <Container>
-                    <h3>Oops, looks like you don't have any saved articles!</h3>
-                    <h4><Link to="/">Browse Articles</Link></h4>
+                    <Row>
+                        <h3>Oops, looks like you don't have any saved articles!</h3>
+                    </Row>    
+                    <Row>
+                        <h4><Link to="/">Browse Articles</Link></h4>
+                    </Row>                
                 </Container>  
             )}
           </Row>

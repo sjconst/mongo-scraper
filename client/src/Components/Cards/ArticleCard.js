@@ -19,7 +19,7 @@ function ArticleCard(props){
     return (      
         <Card key={props.id} >
             <Card.Body>
-                <Card.Title><a href={props.URL}>{props.headline}</a></Card.Title>
+                <Card.Title><a href={props.URL} target="_blank" rel="noopener noreferrer">{props.headline}</a></Card.Title>
                 <Card.Text>{props.summary}</Card.Text>
             </Card.Body> 
             <Button className="myButton" id={props.id} data-saved={props.isSaved} onClick={saveArticle}>Save Article</Button>             

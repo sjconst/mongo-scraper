@@ -8,7 +8,7 @@ import { faEnvelopeOpen } from "@fortawesome/free-solid-svg-icons";
 function Footer(){  
       return (
         <div className="fixed-bottom" id="myFooter">            
-            <Row>            
+            <Row id="footerRow">            
                 <Col className="text-left">      
                     <a href="https://www.stephanielake.io" target="_blank" rel="noopener noreferrer">www.stephanielake.io</a>   
                 </Col>                  

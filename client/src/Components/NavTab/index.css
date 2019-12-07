@@ -5,14 +5,15 @@ Dark blue: #303C6C
 Light blue: #B4DFE5
 light turquoise: #D2FDFF */
 .nav-link{
-    color: #303C6C;
+    color: #FBE8A6!important;
     margin-right: 20px;
     font-weight: 500;
     text-decoration: none;
 }
 #myNavbar {
-    background-color: rgba(251, 232, 166, 0.85);
+    background-color: #303C6C;
 }
 #myLink {
     text-decoration: none;
+    color: #FBE8A6!important;
 }

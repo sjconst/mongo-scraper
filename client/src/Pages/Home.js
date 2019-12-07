@@ -28,14 +28,14 @@ function Home(){
     return (
         <div id="homeBackground">
         <Container id="homeContainer" >
-          <Row>
-            <h1>News Scraper</h1>
-            <h4>Automatically grab the latest headlines. Build a list of saved articles. Comment and save notes as needed.</h4>  
+          <Row className="transparent">           
+              <h1>News Scraper</h1>
+              <h4>Automatically grab the latest headlines. Build a list of saved articles. Comment and save notes as needed.</h4>              
             {articles.length ? (
               <CardColumns>                  
                 {articles.map(el => (  
                   !el.saved &&
-                    <ArticleCard key={el._id} id={el._id} summary={el.summary} headline={el.headline} isSaved={el.saved}/> 
+                    <ArticleCard key={el._id} id={el._id} summary={el.summary} headline={el.headline} isSaved={el.saved} URL={`https://www.nytimes.com${el.URL}`}/> 
                 ))}
               </CardColumns>
             ) : (

@@ -1,9 +1,12 @@
 #myFooter {
-    background-color: rgba(251, 232, 166, 0.85);
+    background-color:#303C6C;
     padding: 10px;
-    font-size: 1em;
+    font-size: 1em;    
 }
 .social {
     padding-right: 10px;  
     font-size: 2em;
+}
+#footerRow a {
+    color: #FBE8A6!important;
 }
