@@ -29,5 +29,5 @@ const articleSchema = new Schema({
   }
 });
 // articleSchema.plugin(uniqueValidator);
-const Articles = mongoose.model("Article", articleSchema);
-module.exports = Articles;
+const articles = mongoose.model("article", articleSchema);
+module.exports = articles;
