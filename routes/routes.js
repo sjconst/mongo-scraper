@@ -24,7 +24,7 @@ axios.get("https://www.nytimes.com/")
         summary: summary
     })
     myArticles.create(results)        
-        .then(data => console.log(data))
+        .then(data => console.log("database updated"))
         .catch(err => console.log("An error occured, most likely duplicate article being scraped"));    
     });
     res.json("Scrape Complete");
@@ -48,8 +48,6 @@ catch(err){
 //Route for getting all articles of certain date
 app.get("/api/articles/date/:date", (req, res) => {
     let date = req.params.date;    
-    console.log(date);
-    console.log(new Date(new Date(date).setHours(23, 59, 59)));
     myArticles.find({
     dateCreated: {
         "$gt": new Date(new Date(date).setHours(23, 59, 59))
