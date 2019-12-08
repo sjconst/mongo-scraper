@@ -103,7 +103,7 @@ app.delete("/api/comment/:id", (req, res) => {
     .catch(err => res.json(err))
 });
 // Home route
-app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
     });
 module.exports = app;

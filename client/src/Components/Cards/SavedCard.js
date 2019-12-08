@@ -19,7 +19,7 @@ function SavedCard(props){
         })
     }
     const refreshPage = () => {
-        window.location.reload(false);
+        window.location.reload();
     }
     const getComments = e => {
         let id = e.target.dataset.id;
