@@ -39,7 +39,7 @@ This app uses MySQL. You will need to set up your remote database by uploading t
 ## Author
 
 * Author: Stephanie Lake - https://github.com/sjconst
-* See deployed on [Heroku](https://desolate-forest-28822.herokuapp.com/)
+* See deployed on [Heroku](https://hidden-coast-32873.herokuapp.com/)
 
 ## License
 
